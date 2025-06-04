@@ -8,7 +8,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xFF4A90E2), // bluish gray (a nice cool blue)
+          primary: Color(0xFF4A90E2), 
           onPrimary: Colors.white,
-          secondary: Color(0xFF7B8D9E), // lighter bluish gray for accents
+          secondary: Color(0xFF7B8D9E), 
           onSecondary: Colors.white,
-          background: Colors.white, // main background white
-          onBackground: Colors.black, // black text on white
-          surface: Color(0xFFF5F7FA), // very light gray surfaces
+          background: Colors.white, 
+          onBackground: Colors.black, 
+          surface: Color(0xFFF5F7FA), 
           onSurface: Colors.black,
           error: Colors.red.shade700,
           onError: Colors.white,
