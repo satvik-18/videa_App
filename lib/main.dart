@@ -14,23 +14,39 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Video App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          primary: Color(0xFF4A90E2), // bluish gray (a nice cool blue)
+          onPrimary: Colors.white,
+          secondary: Color(0xFF7B8D9E), // lighter bluish gray for accents
+          onSecondary: Colors.white,
+          background: Colors.white, // main background white
+          onBackground: Colors.black, // black text on white
+          surface: Color(0xFFF5F7FA), // very light gray surfaces
+          onSurface: Colors.black,
+          error: Colors.red.shade700,
+          onError: Colors.white,
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 162, 162, 162),
+          elevation: 4,
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0),
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+
+        textTheme: Typography.blackCupertino.copyWith(
+          titleLarge: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
+
       home: Home_Page(),
     );
   }
