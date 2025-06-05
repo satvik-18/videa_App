@@ -20,8 +20,6 @@ class MyApp extends StatelessWidget {
           onPrimary: Colors.white,
           secondary: Color(0xFF7B8D9E), // lighter bluish gray for accents
           onSecondary: Colors.white,
-          background: Colors.white, // main background white
-          onBackground: Colors.black, // black text on white
           surface: Color(0xFFF5F7FA), // very light gray surfaces
           onSurface: Colors.black,
           error: Colors.red.shade700,
