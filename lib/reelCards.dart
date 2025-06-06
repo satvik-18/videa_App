@@ -1,10 +1,5 @@
-import 'dart:math';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_app/shorts.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ShortCard extends StatefulWidget {
   final Map<String, String> short;
@@ -25,46 +20,47 @@ class ShortCard extends StatefulWidget {
 }
 
 class _ShortCardState extends State<ShortCard> {
-  Uint8List? _thumbnailBytes;
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   bool _isInitialized = false;
+
   @override
   void initState() {
     super.initState();
+    if (widget.autoPlay) _initController();
+  }
+
+  void _initController() {
     _controller = VideoPlayerController.asset(widget.short['videoUrl']!)
       ..initialize().then((_) {
         setState(() {
           _isInitialized = true;
         });
-        _controller.setLooping(true);
-        _controller.setVolume(0.0);
-        _controller.play();
-        _generateThumbnail();
+        _controller?.setLooping(true);
+        _controller?.setVolume(0.0);
+        _controller?.play();
       });
   }
 
-  Future<void> _generateThumbnail() async {
-    try {
-      final uint8list = await VideoThumbnail.thumbnailData(
-        video: widget.short['videoUrl']!,
-        imageFormat: ImageFormat.JPEG,
-        maxWidth: 128, // thumbnail width
-        quality: 25,
-      );
-      if (uint8list != null && mounted) {
-        setState(() {
-          _thumbnailBytes = uint8list;
-        });
-      }
-    } catch (e) {
-      // handle error silently or print
-      // print('Thumbnail generation error: $e');
+  void _disposeController() {
+    _controller?.pause();
+    _controller?.dispose();
+    _controller = null;
+    _isInitialized = false;
+  }
+
+  @override
+  void didUpdateWidget(covariant ShortCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.autoPlay && _controller == null) {
+      _initController();
+    } else if (!widget.autoPlay && _controller != null) {
+      _disposeController();
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _disposeController();
     super.dispose();
   }
 
@@ -75,37 +71,35 @@ class _ShortCardState extends State<ShortCard> {
       width: widget.w,
       child: Card(
         clipBehavior: Clip.hardEdge,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Stack(
           fit: StackFit.expand,
           children: [
-            if (_isInitialized && widget.autoPlay)
+            if (widget.autoPlay && _isInitialized)
               FittedBox(
                 fit: BoxFit.cover,
                 child: SizedBox(
-                  width: _controller.value.size.width,
-                  height: _controller.value.size.height,
-                  child: VideoPlayer(_controller),
+                  width: _controller!.value.size.width,
+                  height: _controller!.value.size.height,
+                  child: VideoPlayer(_controller!),
                 ),
               )
-            else if (_isInitialized && !widget.autoPlay)
-              (_thumbnailBytes != null
-                  ? Image.memory(
-                      _thumbnailBytes!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Center(child: Icon(Icons.broken_image)),
-                    )
-                  : Container(
-                      color: Colors.black12, // Or any placeholder color/image
-                      child: const Center(
-                        child: Icon(Icons.image, size: 40, color: Colors.grey),
-                      ),
-                    ))
             else
-              const Center(child: CircularProgressIndicator()),
+              SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: Image.asset(
+                    widget.short['thumnailUrl']!,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Icon(Icons.image, size: 2, color: Colors.grey),
+                      );
+                    },
+                  ),
+                ),
+              ),
           ],
         ),
       ),

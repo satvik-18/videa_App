@@ -107,10 +107,10 @@ class Home_Page extends StatelessWidget {
               height: screenHeight * 0.2,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 10,
+                itemCount: 9,
                 itemBuilder: (context, index) {
                   return ShortCard(
-                    short: shorts[0],
+                    short: shorts[index % shorts.length + 3],
                     h: screenHeight * 0.15,
                     w: isTablet ? screenWidth * 0.25 : screenWidth * 0.375,
                   );
@@ -142,12 +142,12 @@ class Home_Page extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ShortCard(
-                          short: shorts[0],
+                          short: shorts[i + 6],
                           h: screenHeight * 0.2,
                           w: screenWidth * 0.48,
                         ),
                         ShortCard(
-                          short: shorts[0],
+                          short: shorts[i + 9],
                           h: screenHeight * 0.2,
                           w: screenWidth * 0.48,
                         ),
