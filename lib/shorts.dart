@@ -54,5 +54,10 @@ final List<Map<String, String>> shorts = [
     "thumnailUrl": "assets/images/s11.jpg",
     "videoUrl": "assets/videos/s11.mp4",
   },
-  {"title": "Short 12", "thumnailUrl": "", "videoUrl": "assets/videos/s12.mp4"},
+  {
+    "title": "Short 12",
+    "thumnailUrl": "assets/images/s12.jpg",
+    "videoUrl": "assets/videos/s12.mp4",
+  },
+  {"title": "Short 13", "thumnailUrl": "", "videoUrl": "assets/videos/s13.mp4"},
 ];

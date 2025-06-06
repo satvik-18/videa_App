@@ -35,9 +35,16 @@ class _ShortCardState extends State<ShortCard> {
         setState(() {
           _isInitialized = true;
         });
+
         _controller?.setLooping(true);
         _controller?.setVolume(0.0);
-        _controller?.play();
+
+        Future.delayed(const Duration(milliseconds: 300), () {
+          // Helps on mobile where immediate play sometimes fails
+          if (mounted && widget.autoPlay) {
+            _controller?.play();
+          }
+        });
       });
   }
 
