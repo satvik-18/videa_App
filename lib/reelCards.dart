@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ShortCard extends StatefulWidget {
   final Map<String, String> short;
   final double h;
   final double w;
   final bool autoPlay;
+  final bool mute;
 
   const ShortCard({
     super.key,
@@ -13,6 +14,7 @@ class ShortCard extends StatefulWidget {
     required this.h,
     required this.w,
     this.autoPlay = false,
+    this.mute = true,
   });
 
   @override
@@ -20,59 +22,73 @@ class ShortCard extends StatefulWidget {
 }
 
 class _ShortCardState extends State<ShortCard> {
-  VideoPlayerController? _controller;
-  bool _isInitialized = false;
+  late YoutubePlayerController _controller;
+  late String _videoId;
+  bool _isPlayerReady = false;
 
   @override
   void initState() {
     super.initState();
-    if (widget.autoPlay) _initController();
+    _videoId =
+        YoutubePlayer.convertUrlToId(widget.short['videoUrl'] ?? '') ?? '';
+    _initController();
   }
 
   void _initController() {
-    _controller = VideoPlayerController.asset(widget.short['videoUrl']!)
-      ..initialize().then((_) {
-        setState(() {
-          _isInitialized = true;
-        });
-
-        _controller?.setLooping(true);
-        _controller?.setVolume(0.0);
-
-        Future.delayed(const Duration(milliseconds: 300), () {
-          // Helps on mobile where immediate play sometimes fails
-          if (mounted && widget.autoPlay) {
-            _controller?.play();
-          }
-        });
-      });
+    _controller = YoutubePlayerController(
+      initialVideoId: _videoId,
+      flags: YoutubePlayerFlags(
+        autoPlay: widget.autoPlay,
+        mute: widget.mute,
+        loop: false, // We'll handle loop manually
+        hideControls: true,
+        disableDragSeek: true,
+        controlsVisibleAtStart: false,
+      ),
+    )..addListener(_playerListener);
   }
 
-  void _disposeController() {
-    _controller?.pause();
-    _controller?.dispose();
-    _controller = null;
-    _isInitialized = false;
+  void _playerListener() {
+    if (!_isPlayerReady && _controller.value.isReady) {
+      setState(() {
+        _isPlayerReady = true;
+      });
+      if (widget.autoPlay) {
+        _controller.play();
+      }
+    }
   }
 
   @override
   void didUpdateWidget(covariant ShortCard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.autoPlay && _controller == null) {
+    final newVideoId =
+        YoutubePlayer.convertUrlToId(widget.short['videoUrl'] ?? '') ?? '';
+    if (_videoId != newVideoId) {
+      _controller.removeListener(_playerListener);
+      _controller.dispose();
+      _videoId = newVideoId;
       _initController();
-    } else if (!widget.autoPlay && _controller != null) {
-      _disposeController();
     }
   }
 
   @override
   void dispose() {
-    _disposeController();
+    _controller.removeListener(_playerListener);
+    _controller.dispose();
     super.dispose();
+  }
+
+  String getThumbnailUrl(String videoUrl) {
+    final videoId = YoutubePlayer.convertUrlToId(videoUrl);
+    return videoId != null
+        ? 'https://img.youtube.com/vi/$videoId/sddefault.jpg'
+        : '';
   }
 
   @override
   Widget build(BuildContext context) {
+    final thumbnailUrl = getThumbnailUrl(widget.short['videoUrl'] ?? '');
     return SizedBox(
       height: widget.h,
       width: widget.w,
@@ -82,31 +98,42 @@ class _ShortCardState extends State<ShortCard> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            if (widget.autoPlay && _isInitialized)
-              FittedBox(
-                fit: BoxFit.cover,
-                child: SizedBox(
-                  width: _controller!.value.size.width,
-                  height: _controller!.value.size.height,
-                  child: VideoPlayer(_controller!),
-                ),
-              )
-            else
-              SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  child: Image.asset(
-                    widget.short['thumnailUrl']!,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Center(
-                        child: Icon(Icons.image, size: 2, color: Colors.grey),
+            widget.autoPlay
+                ? YoutubePlayerBuilder(
+                    player: YoutubePlayer(
+                      controller: _controller,
+                      bottomActions: [],
+                      showVideoProgressIndicator: false,
+                      onEnded: (metaData) {
+                        _controller.seekTo(
+                          Duration(seconds: 1),
+                        ); // Avoid 0s to prevent bug
+                        _controller.play();
+                      },
+                    ),
+                    builder: (context, player) {
+                      return FittedBox(
+                        fit: BoxFit.cover,
+                        child: SizedBox(
+                          width: widget.w,
+                          height: widget.h,
+                          child: player,
+                        ),
                       );
                     },
+                  )
+                : FittedBox(
+                    fit: BoxFit.cover,
+                    child: Image.network(
+                      thumbnailUrl,
+                      width: widget.w,
+                      height: widget.h,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Center(
+                        child: Icon(Icons.broken_image, size: 40),
+                      ),
+                    ),
                   ),
-                ),
-              ),
           ],
         ),
       ),

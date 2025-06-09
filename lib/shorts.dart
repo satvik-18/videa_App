@@ -1,63 +1,54 @@
 final List<Map<String, String>> shorts = [
   {
     "title": "Short 1",
-    "thumnailUrl": "assets/images/s1.jpg",
-    "videoUrl": "assets/videos/s1.mp4",
+    "videoUrl": "https://youtube.com/shorts/31TVgjF7J0c?si=etU_iDQgKDv3nyHq",
   },
   {
     "title": "Short 2",
-    "thumnailUrl": "assets/images/s2.jpg",
-    "videoUrl": "assets/videos/s2.mp4",
+    "videoUrl": "https://youtube.com/shorts/KeDsUTPGXiI?si=2deICUoPXYLVLxAn",
   },
   {
     "title": "Short 3",
-    "thumnailUrl": "assets/images/s3.jpg",
-    "videoUrl": "assets/videos/s3.mp4",
+    "videoUrl": "https://youtube.com/shorts/BhgjTyWllRg?si=aQNlCfpDmJstg1di",
   },
   {
     "title": "Short 4",
-    "thumnailUrl": "assets/images/s4.jpg",
-    "videoUrl": "assets/videos/s4.mp4",
+    "videoUrl": "https://youtube.com/shorts/2H_YyklnpFM?si=hNtnUEMnmDuTWRAz",
   },
   {
     "title": "Short 5",
-    "thumnailUrl": "assets/images/s5.jpg",
-    "videoUrl": "assets/videos/s5.mp4",
+    "videoUrl": "https://youtube.com/shorts/au1M6TggB_U?si=nsgUa8IyCPUZhgPV",
   },
   {
     "title": "Short 6",
-    "thumnailUrl": "assets/images/s6.jpg",
-    "videoUrl": "assets/videos/s6.mp4",
+    "videoUrl": "https://youtube.com/shorts/Ux2zKPR6RD0?si=YTr9RRiB6xwkDFVJ",
   },
   {
     "title": "Short 7",
-    "thumnailUrl": "assets/images/s7.jpg",
-    "videoUrl": "assets/videos/s7.mp4",
+    "videoUrl": "https://youtube.com/shorts/RM485oUuOhg?si=5NTtQY65DnE6JwQW",
   },
   {
     "title": "Short 8",
-    "thumnailUrl": "assets/images/s8.jpg",
-    "videoUrl": "assets/videos/s8.mp4",
+    "videoUrl": "https://youtube.com/shorts/JoyKXJdWKOE?si=0r9u9TkC6dEf7eOi",
   },
   {
     "title": "Short 9",
-    "thumnailUrl": "assets/images/s9.jpg",
-    "videoUrl": "assets/videos/s9.mp4",
+    "videoUrl": "https://youtube.com/shorts/7aKsPwH1iss?si=pLG8UicWg9vGxdiE",
   },
   {
     "title": "Short 10",
-    "thumnailUrl": "assets/images/s10.jpg",
-    "videoUrl": "assets/videos/s10.mp4",
+    "videoUrl": "https://youtube.com/shorts/di3sDSnEnmo?si=LHQ2mh5x1YYcSdYH",
   },
   {
     "title": "Short 11",
-    "thumnailUrl": "assets/images/s11.jpg",
-    "videoUrl": "assets/videos/s11.mp4",
+    "videoUrl": "https://youtube.com/shorts/NzxGM0RRxYY?si=itfSJX_xp_eXQ5N2",
   },
   {
     "title": "Short 12",
-    "thumnailUrl": "assets/images/s12.jpg",
-    "videoUrl": "assets/videos/s12.mp4",
+    "videoUrl": "https://youtube.com/shorts/bh217bq6x1Q?si=xJFo8fSxAwluiltz",
   },
-  {"title": "Short 13", "thumnailUrl": "", "videoUrl": "assets/videos/s13.mp4"},
+  {
+    "title": "Short 13",
+    "videoUrl": "https://youtu.be/oc_o5DZM3qc?si=mBYBL4t-IrJTZ0L6",
+  },
 ];
